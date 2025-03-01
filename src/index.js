@@ -3,21 +3,19 @@ import { openModal, closeModal } from "./components/modal.js";
 import { initialCards } from "./scripts/cards.js";
 
 const placesList = document.querySelector(".places__list");
-const editButton = document.querySelector(".profile__edit-button");
 const popupEdit = document.querySelector(".popup_type_edit");
+const popupNewCard = document.querySelector(".popup_type_new-card");
+const popupImage = document.querySelector(".popup_type_image");
+const editButton = document.querySelector(".profile__edit-button");
+const addButton = document.querySelector(".profile__add-button");
 const nameInput = popupEdit.querySelector(".popup__input_type_name");
 const jobInput = popupEdit.querySelector(".popup__input_type_description");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const formEditProfile = popupEdit.querySelector(".popup__form");
-
-const addButton = document.querySelector(".profile__add-button");
-const popupNewCard = document.querySelector(".popup_type_new-card");
 const formNewCard = popupNewCard.querySelector(".popup__form");
 const cardNameInput = popupNewCard.querySelector(".popup__input_type_card-name");
 const cardLinkInput = popupNewCard.querySelector(".popup__input_type_url");
-
-const popupImage = document.querySelector(".popup_type_image");
 const popupImgElement = popupImage.querySelector(".popup__image");
 const popupCaption = popupImage.querySelector(".popup__caption");
 
@@ -66,6 +64,14 @@ document.querySelectorAll(".popup__close").forEach((closeButton) => {
   });
 });
 
+document.querySelectorAll(".popup").forEach((popup) => {
+  popup.addEventListener("click", (event) => {
+    if (event.target === popup) {
+      closeModal(popup);
+    }
+  });
+});
+
 function renderCards() {
   initialCards.forEach((cardData) => {
     const cardElement = createCard(cardData, deleteCard, toggleLike, openImagePopup);
@@ -75,5 +81,6 @@ function renderCards() {
 
 document.addEventListener("DOMContentLoaded", renderCards);
 
+import "./pages/index.css";
 
-import './pages/index.css';
+
