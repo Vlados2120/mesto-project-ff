@@ -28,7 +28,6 @@ const popupCaption = popupImage.querySelector(".popup__caption");
 const cohortId = 'wff-cohort-34';
 const token = '5cf250ec-4e0c-4c21-8a7d-4315c9dbd00d';
 
-// Функция для установки состояния загрузки
 function setLoadingState(button, isLoading) {
   if (isLoading) {
     button.dataset.defaultText = button.textContent;
@@ -40,7 +39,6 @@ function setLoadingState(button, isLoading) {
   }
 }
 
-// Функция для открытия попапа с картинкой
 function openImagePopup(cardData) {
   popupImgElement.src = cardData.link;
   popupImgElement.alt = cardData.name;
@@ -48,7 +46,6 @@ function openImagePopup(cardData) {
   openModal(popupImage);
 }
 
-// Обработчик формы редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   const submitButton = evt.submitter;
@@ -59,7 +56,6 @@ function handleProfileFormSubmit(evt) {
     .finally(() => setLoadingState(submitButton, false));
 }
 
-// Обработчик формы смены аватара
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
   const submitButton = evt.submitter;
@@ -70,7 +66,6 @@ function handleAvatarFormSubmit(evt) {
     .finally(() => setLoadingState(submitButton, false));
 }
 
-// Обработчик формы добавления новой карточки
 function handleNewCardSubmit(evt) {
   evt.preventDefault();
   const submitButton = evt.submitter;
@@ -84,7 +79,7 @@ function handleNewCardSubmit(evt) {
     .finally(() => setLoadingState(submitButton, false));
 }
 
-// Загрузка данных с сервера
+
 Promise.all([getUserData(), getCards()])
   .then(([userData, cards]) => {
     profileTitle.textContent = userData.name;
@@ -98,7 +93,7 @@ Promise.all([getUserData(), getCards()])
   })
   .catch(error => console.error('Ошибка при загрузке данных:', error));
 
-// Добавление слушателей событий
+
 formEditProfile.addEventListener("submit", handleProfileFormSubmit);
 formNewCard.addEventListener("submit", handleNewCardSubmit);
 formAvatar.addEventListener("submit", handleAvatarFormSubmit);
@@ -142,4 +137,4 @@ enableValidation({
   errorClass: "popup__error_visible"
 });
 
-import "./pages/index.css"; // Подключаем стили
+import "./pages/index.css";

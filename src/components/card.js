@@ -8,15 +8,15 @@ export function createCard(cardData, deleteCallback, likeCallback, openImagePopu
   const cardTitle = cardElement.querySelector(".card__title");
   const deleteButton = cardElement.querySelector(".card__delete-button");
   const likeButton = cardElement.querySelector(".card__like-button");
-  const likesCountElement = cardElement.querySelector(".card__likes-count");  // Новый элемент для количества лайков
+  const likesCountElement = cardElement.querySelector(".card__likes-count");
 
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
   cardTitle.textContent = cardData.name;
-  likesCountElement.textContent = cardData.likes.length;  // Устанавливаем количество лайков
+  likesCountElement.textContent = cardData.likes.length;
 
   if (cardData.owner._id !== userId) {
-    deleteButton.remove(); // Удаляем кнопку, если карточка не принадлежит текущему пользователю
+    deleteButton.remove();
   } else {
     deleteButton.addEventListener("click", () => deleteCallback(cardElement, cardData._id));
   }
@@ -48,8 +48,8 @@ export function toggleLike(likeButton, cardId, likesCountElement) {
       return response.json();
     })
     .then((data) => {
-      likesCountElement.textContent = data.likes.length; // Обновляем количество лайков из ответа сервера
-      likeButton.classList.toggle("card__like-button_is-active"); // Переключаем активный класс
+      likesCountElement.textContent = data.likes.length;
+      likeButton.classList.toggle("card__like-button_is-active");
     })
     .catch((error) => console.error("Ошибка при изменении лайка:", error));
 }

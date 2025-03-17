@@ -6,7 +6,6 @@ const config = {
     },
   };
   
-  // Функция для получения данных пользователя
   export const getUserData = () => {
     return fetch(`${config.baseUrl}/users/me`, {
       method: 'GET',
@@ -19,11 +18,10 @@ const config = {
         return response.json();
       })
       .catch((error) => {
-        console.log(error.message); // Обрабатываем ошибку и выводим в консоль
+        console.log(error.message);
       });
   };
   
-  // Функция для получения карточек
   export const getCards = () => {
     return fetch(`${config.baseUrl}/cards`, {
       method: 'GET',
@@ -36,11 +34,10 @@ const config = {
         return response.json();
       })
       .catch((error) => {
-        console.log(error.message); // Обрабатываем ошибку и выводим в консоль
+        console.log(error.message);
       });
   };
   
-  // Функция для обновления данных профиля
   export const updateUserProfile = (name, about) => {
     return fetch(`${config.baseUrl}/users/me`, {
       method: 'PATCH',
@@ -54,11 +51,10 @@ const config = {
         return response.json();
       })
       .catch((error) => {
-        console.log(error.message); // Обрабатываем ошибку и выводим в консоль
+        console.log(error.message); 
       });
   };
   
-  // Функция для обновления аватара
   export const updateAvatar = (avatarUrl) => {
     return fetch(`${config.baseUrl}/users/me/avatar`, {
       method: 'PATCH',
@@ -72,11 +68,10 @@ const config = {
         return response.json();
       })
       .catch((error) => {
-        console.log(error.message); // Обрабатываем ошибку и выводим в консоль
+        console.log(error.message);
       });
   };
   
-  // Функция для добавления новой карточки
   export const addNewCard = (name, link) => {
     return fetch(`${config.baseUrl}/cards`, {
       method: 'POST',
@@ -90,11 +85,10 @@ const config = {
         return response.json();
       })
       .catch((error) => {
-        console.log(error.message); // Обрабатываем ошибку и выводим в консоль
+        console.log(error.message);
       });
   };
   
-  // Функция для удаления карточки
   export const deleteCard = (cardId) => {
     return fetch(`${config.baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
@@ -107,11 +101,10 @@ const config = {
         return response.json();
       })
       .catch((error) => {
-        console.log(error.message); // Обрабатываем ошибку и выводим в консоль
+        console.log(error.message);
       });
   };
   
-  // Функция для лайка карточки
   export const toggleLike = (cardId, isLiked) => {
     const method = isLiked ? 'DELETE' : 'PUT';
     return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
@@ -125,7 +118,7 @@ const config = {
         return response.json();
       })
       .catch((error) => {
-        console.log(error.message); // Обрабатываем ошибку и выводим в консоль
+        console.log(error.message);
       });
   };
   

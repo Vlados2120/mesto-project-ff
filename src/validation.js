@@ -1,4 +1,3 @@
-// Функция для отображения ошибки
 function showError(input, errorMessage, settings) {
     const errorElement = input.nextElementSibling;
     input.classList.add(settings.inputErrorClass);
@@ -6,7 +5,6 @@ function showError(input, errorMessage, settings) {
     errorElement.classList.add(settings.errorClass);
   }
   
-  // Функция для скрытия ошибки
   function hideError(input, settings) {
     const errorElement = input.nextElementSibling;
     input.classList.remove(settings.inputErrorClass);
@@ -14,7 +12,6 @@ function showError(input, errorMessage, settings) {
     errorElement.classList.remove(settings.errorClass);
   }
   
-  // Функция для валидации инпута
   function validateInput(input, settings) {
     const pattern = input.dataset.pattern ? new RegExp(input.dataset.pattern) : null;
     const minLength = input.dataset.minlength ? Number(input.dataset.minlength) : 2;
@@ -45,7 +42,6 @@ function showError(input, errorMessage, settings) {
     return true;
   }
   
-  // Функция для валидации URL
   function validateUrlInput(input, settings) {
     try {
       new URL(input.value);
@@ -57,7 +53,6 @@ function showError(input, errorMessage, settings) {
     }
   }
   
-  // Функция для переключения состояния кнопки
   function toggleButtonState(form, settings) {
     const submitButton = form.querySelector(settings.submitButtonSelector);
     const inputs = Array.from(form.querySelectorAll(settings.inputSelector));
@@ -67,7 +62,6 @@ function showError(input, errorMessage, settings) {
     submitButton.classList.toggle(settings.inactiveButtonClass, !isValid);
   }
   
-  // Функция для установки слушателей событий на форму
   function setEventListeners(form, settings) {
     const inputs = Array.from(form.querySelectorAll(settings.inputSelector));
   
@@ -90,13 +84,11 @@ function showError(input, errorMessage, settings) {
     toggleButtonState(form, settings);
   }
   
-  // Функция для включения валидации на всех формах
   function enableValidation(settings) {
     const forms = document.querySelectorAll(settings.formSelector);
     forms.forEach((form) => setEventListeners(form, settings));
   }
   
-  // Функция для очистки ошибок валидации
   function clearValidation(form, settings) {
     const inputs = Array.from(form.querySelectorAll(settings.inputSelector));
     const submitButton = form.querySelector(settings.submitButtonSelector);
