@@ -1,7 +1,8 @@
-import { getUserData, getCards, updateUserProfile, updateAvatar, addNewCard, } from './api.js';
-import { createCard, deleteCard as deleteCard, toggleLike } from './components/card.js';
-import { openModal, closeModal } from './components/modal.js';
-import { enableValidation } from './validation.js';
+import "./pages/index.css";
+import { getUserData, getCards, updateUserProfile, updateAvatar, addNewCard,} from "./api.js"; 
+import { createCard, deleteCard, toggleLike } from "./components/card.js";
+import { openModal, closeModal } from "./components/modal.js";
+import { enableValidation } from "./validation.js";
 
 const placesList = document.querySelector(".places__list");
 const popupEdit = document.querySelector(".popup_type_edit");
@@ -25,9 +26,6 @@ const avatarInput = popupAvatar.querySelector(".popup__input_type_avatar");
 const popupImgElement = popupImage.querySelector(".popup__image");
 const popupCaption = popupImage.querySelector(".popup__caption");
 
-const cohortId = 'wff-cohort-34';
-const token = '5cf250ec-4e0c-4c21-8a7d-4315c9dbd00d';
-
 function setLoadingState(button, isLoading) {
   if (isLoading) {
     button.dataset.defaultText = button.textContent;
@@ -50,9 +48,12 @@ function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   const submitButton = evt.submitter;
   setLoadingState(submitButton, true);
-
   updateUserProfile(nameInput.value, jobInput.value)
-    .then(() => closeModal(popupEdit))
+    .then((userData) => {
+      profileTitle.textContent = userData.name;
+      profileDescription.textContent = userData.about;
+      closeModal(popupEdit);
+    })
     .finally(() => setLoadingState(submitButton, false));
 }
 
@@ -60,9 +61,11 @@ function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
   const submitButton = evt.submitter;
   setLoadingState(submitButton, true);
-
   updateAvatar(avatarInput.value)
-    .then(() => formAvatar.reset())
+    .then((userData) => {
+      profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
+      closeModal(popupAvatar);
+    })
     .finally(() => setLoadingState(submitButton, false));
 }
 
@@ -70,29 +73,28 @@ function handleNewCardSubmit(evt) {
   evt.preventDefault();
   const submitButton = evt.submitter;
   setLoadingState(submitButton, true);
-
   addNewCard(cardNameInput.value, cardLinkInput.value)
-    .then(() => {
+    .then((cardData) => {
+      const cardElement = createCard(cardData, deleteCard, toggleLike, openImagePopup, cardData.owner._id);
+      placesList.prepend(cardElement);
       formNewCard.reset();
       closeModal(popupNewCard);
     })
     .finally(() => setLoadingState(submitButton, false));
 }
 
-
 Promise.all([getUserData(), getCards()])
   .then(([userData, cards]) => {
     profileTitle.textContent = userData.name;
     profileDescription.textContent = userData.about;
     profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
-    placesList.innerHTML = '';
-    cards.forEach(cardData => {
+    placesList.innerHTML = "";
+    cards.forEach((cardData) => {
       const cardElement = createCard(cardData, deleteCard, toggleLike, openImagePopup, userData._id);
       placesList.appendChild(cardElement);
     });
   })
-  .catch(error => console.error('Ошибка при загрузке данных:', error));
-
+  .catch((error) => console.error("Ошибка при загрузке данных:", error));
 
 formEditProfile.addEventListener("submit", handleProfileFormSubmit);
 formNewCard.addEventListener("submit", handleNewCardSubmit);
@@ -136,5 +138,3 @@ enableValidation({
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__error_visible"
 });
-
-import "./pages/index.css";

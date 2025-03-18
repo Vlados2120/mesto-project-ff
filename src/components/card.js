@@ -1,3 +1,5 @@
+import { toggleLike as apiToggleLike, deleteCard as apiDeleteCard } from "../api.js"
+
 export function createCard(cardData, deleteCallback, likeCallback, openImagePopup, userId) {
   const cardTemplate = document
     .querySelector("#card-template")
@@ -14,6 +16,11 @@ export function createCard(cardData, deleteCallback, likeCallback, openImagePopu
   cardImage.alt = cardData.name;
   cardTitle.textContent = cardData.name;
   likesCountElement.textContent = cardData.likes.length;
+
+  const isLikedByCurrentUser = cardData.likes.some((like) => like._id === userId);
+  if (isLikedByCurrentUser) {
+    likeButton.classList.add("card__like-button_is-active");
+  }
 
   if (cardData.owner._id !== userId) {
     deleteButton.remove();
@@ -32,42 +39,19 @@ export function createCard(cardData, deleteCallback, likeCallback, openImagePopu
 
 export function toggleLike(likeButton, cardId, likesCountElement) {
   const isLiked = likeButton.classList.contains("card__like-button_is-active");
-  const method = isLiked ? "DELETE" : "PUT";
 
-  fetch(`https://nomoreparties.co/v1/wff-cohort-34/cards/likes/${cardId}`, {
-    method: method,
-    headers: {
-      authorization: "5cf250ec-4e0c-4c21-8a7d-4315c9dbd00d",
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Ошибка при изменении лайка");
-      }
-      return response.json();
-    })
+  apiToggleLike(cardId, isLiked)
     .then((data) => {
-      likesCountElement.textContent = data.likes.length;
-      likeButton.classList.toggle("card__like-button_is-active");
+      likesCountElement.textContent = data.likes.length; 
+      likeButton.classList.toggle("card__like-button_is-active"); 
     })
     .catch((error) => console.error("Ошибка при изменении лайка:", error));
 }
 
 export function deleteCard(cardElement, cardId) {
-  fetch(`https://nomoreparties.co/v1/wff-cohort-34/cards/${cardId}`, {
-    method: "DELETE",
-    headers: {
-      authorization: "5cf250ec-4e0c-4c21-8a7d-4315c9dbd00d",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Ошибка при удалении карточки");
-      }
+  apiDeleteCard(cardId)
+    .then(() => {
       cardElement.remove();
     })
-    .catch((error) => {
-      console.error("Ошибка при удалении карточки:", error);
-    });
+    .catch((error) => console.error("Ошибка при удалении карточки:", error));
 }
